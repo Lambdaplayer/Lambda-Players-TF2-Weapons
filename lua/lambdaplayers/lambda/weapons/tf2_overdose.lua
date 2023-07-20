@@ -90,8 +90,8 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             wepent:SetWeaponAttribute( "Damage", 5.1 )
             wepent:SetWeaponAttribute( "RateOfFire", 0.105 )
             wepent:SetWeaponAttribute( "Animation", ACT_HL2MP_GESTURE_RANGE_ATTACK_SMG1 )
-            wepent:SetWeaponAttribute( "Sound", ")weapons/syringegun_shoot.wav" )
-            wepent:SetWeaponAttribute( "CritSound", ")weapons/syringegun_shoot_crit.wav" )
+            wepent:SetWeaponAttribute( "Sound", ")weapons/tf_medic_syringe_overdose.wav" )
+            wepent:SetWeaponAttribute( "CritSound", ")weapons/tf_medic_syringe_overdose_crit.wav" )
             wepent:SetWeaponAttribute( "UseRapidFireCrits", true )
 
             wepent:SetWeaponAttribute( "MuzzleFlash", "muzzle_syringe" )
