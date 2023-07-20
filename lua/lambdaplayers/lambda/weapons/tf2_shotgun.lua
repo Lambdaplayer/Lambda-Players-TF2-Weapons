@@ -2,7 +2,7 @@ local random = math.random
 
 table.Merge( _LAMBDAPLAYERSWEAPONS, {
     tf2_shotgun = {
-        model = "models/lambdaplayers/tf2/weapons/w_shotgun.mdl",
+        model = "models/zetatf2/weapons/w_shotgun.mdl", --Placeholder Model until Yermash Fix The Texture
         origin = "Team Fortress 2",
         prettyname = "Shotgun",
         holdtype = "shotgun",
