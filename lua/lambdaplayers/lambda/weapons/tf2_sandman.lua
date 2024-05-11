@@ -67,6 +67,7 @@ local function OnBallTouch( self, ent )
             LAMBDA_TF2:SetCritType( dmginfo, critType )
 
             ent:DispatchTraceAttack( dmginfo, touchTr, self:GetForward() )
+            owner:PlaySoundFile( "stunballhit" )
             ent:EmitSound( ")weapons/bat_baseball_hit_flesh.wav", nil, nil, nil, CHAN_STATIC )
         elseif touchTr.HitWorld then
             self:EmitSound( "weapons/baseball_hitworld" .. random( 1, 3 ) .. ".wav", nil, nil, nil, CHAN_STATIC )
@@ -120,6 +121,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
                 if !self:IsInRange( ene, 150 ) and self:IsInRange( ene, 2000 ) and self:CanSee( ene ) then
                     local throwAnim = self:LookupSequence( "scout_range_ball" )
                     if throwAnim > 0 then
+                        self:PlaySoundFile(self:GetVoiceLine("throwing"))
                         self:AddGestureSequence( throwAnim )
                     else
                         self:RemoveGesture( ACT_HL2MP_GESTURE_RANGE_ATTACK_GRENADE )
@@ -142,7 +144,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
                         spawnPos = ( spawnPos + spawnAng:Forward() * 32 )
                         spawnAng = ( targetPos - spawnPos ):Angle()
 
-                        local ball = ents.Create( "base_anim" )
+                        local ball = ents.Create( "base_gmodentity" )
                         ball:SetModel( "models/weapons/w_models/w_baseball.mdl" )
                         ball:SetPos( spawnPos )
                         ball:SetAngles( spawnAng )
@@ -163,8 +165,17 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
                         ball:SetLocalVelocity( ( spawnAng:Forward() * 10 + spawnAng:Up() * 1 ):GetNormalized() * 3000 )
                         ball:SetLocalAngularVelocity( Angle( 0, Rand( 0, 100 ), 0 ) )
 
-                        local trail = LAMBDA_TF2:CreateSpriteTrailEntity( nil, nil, 5.4, 0, 0.4, "effects/baseballtrail_" .. ( self.l_TF_TeamColor == 1 and "blu" or "red" ), ball:WorldSpaceCenter(), ball )
-                        SimpleTimer( 3, function()
+                       local critType = self:GetCritBoostType()
+                       if isCrit then critType = TF_CRIT_FULL end
+
+                        if critType == TF_CRIT_FULL then
+                            ParticleEffectAttach( "stunballtrail_" .. ( self.l_TF_TeamColor == 1 and "blue_crit" or "red_crit" ), PATTACH_ABSORIGIN_FOLLOW, ball, 0 )
+                        end
+
+                        ParticleEffectAttach( "stunballtrail_" .. ( self.l_TF_TeamColor == 1 and "blue" or "red" ), PATTACH_ABSORIGIN_FOLLOW, ball, 0 )
+
+                        local trail = LAMBDA_TF2:CreateSpriteTrailEntity( nil, nil, 9.4, 5.8, 0.4, "effects/baseballtrail_" .. ( self.l_TF_TeamColor == 1 and "blu" or "red" ), ball:WorldSpaceCenter(), ball )
+                        SimpleTimer( 2, function()
                             if !IsValid( trail ) then return end
                             local curPos = trail:GetPos()
                             trail:SetParent( NULL )
